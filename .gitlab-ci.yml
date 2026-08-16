@@ -1,0 +1,29 @@
+stages:
+  - build
+  - test
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+backend-build:
+  stage: build
+  image: maven:3.9-eclipse-temurin-25
+  script:
+    - cd backend && mvn -B -DskipTests package
+  artifacts:
+    paths:
+      - backend/target/*.jar
+
+backend-test:
+  stage: test
+  image: maven:3.9-eclipse-temurin-25
+  script:
+    - cd backend && mvn -B test
+  # TODO US12 : c'est ici que le test ArchUnit (frontières hexagonales) s'exécute,
+  # une fois que vous l'aurez écrit dans src/test/java/.../architecture
+
+frontend-build:
+  stage: build
+  image: node:22-alpine
+  script:
+    - cd frontend && npm install && npm run build

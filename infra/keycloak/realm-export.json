@@ -1,0 +1,28 @@
+{
+  "realm": "diabcare",
+  "enabled": true,
+  "roles": {
+    "realm": [
+      { "name": "patient", "description": "Patient suivi par le prestataire" },
+      { "name": "soignant", "description": "Suivi clinique des patients" },
+      { "name": "coordinateur", "description": "Accueil administratif : création patient, RDV, matériel" },
+      { "name": "admin", "description": "Administration technique (hors métier)" }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "diabcare-frontend",
+      "publicClient": true,
+      "protocol": "openid-connect",
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "redirectUris": ["http://localhost:3000/*"],
+      "webOrigins": ["http://localhost:3000"],
+      "attributes": {
+        "pkce.code.challenge.method": "S256"
+      }
+    }
+  ],
+  "protocolMappers": [],
+  "_comment": "TODO US4/US5/US6 : ajouter le protocol mapper 'patient_id' (User Attribute -> claim patient_id) sur le client diabcare-frontend une fois que vous testez le filtrage des RDV par patient. Pas préconfiguré ici volontairement : c'est ce mapper que vous allez créer et comprendre en implémentant ces US."
+}
