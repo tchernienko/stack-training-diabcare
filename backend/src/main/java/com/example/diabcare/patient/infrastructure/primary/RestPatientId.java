@@ -11,7 +11,7 @@ import java.util.UUID;
 @EqualsAndHashCode
 public class RestPatientId {
 
-    private UUID patientId;
+    private UUID value;
 
     public static RestPatientId of(UUID patientId) {
         return new RestPatientId(patientId);

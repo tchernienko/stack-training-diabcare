@@ -17,8 +17,14 @@ public class Patient {
     private LocalDate dateNaissance;
     private TypePompe typePompe;
 
+    @Builder
     public Patient(PatientId id, String nom, LocalDate dateNaissance, TypePompe typePompe) {
-        this.id = id;
+
+        if (id == null) {
+            this.id = PatientId.newOne();
+        } else {
+            this.id = id;
+        }
 
         if (StringUtils.isBlank(nom)) {
             throw new InvalidPatientParametersException("Le nom n'est pas valide, valeur non vide attendue.");

@@ -20,9 +20,9 @@ public class PatientId {
         return new PatientId(id);
     }
 
-    private final UUID valeur;
+    private final UUID value;
 
     private PatientId() {
-        this.valeur = UUID.randomUUID();
+        this.value = UUID.randomUUID();
     }
 }

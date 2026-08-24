@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
-public class JpaEntityPatient {
+public class PatientJpaEntity {
 
     private UUID id;
 
@@ -21,6 +21,14 @@ public class JpaEntityPatient {
     private LocalDate dateNaissance;
 
     private TypePompe typePompe;
+
+    public static PatientJpaEntity of(Patient patient) {
+        return new PatientJpaEntity()
+                .setId(patient.getId().getValue())
+                .setNom(patient.getNom())
+                .setDateNaissance(patient.getDateNaissance())
+                .setTypePompe(patient.getTypePompe());
+    }
 
     @Transient
     public Patient toDomain() {
@@ -32,7 +40,7 @@ public class JpaEntityPatient {
         return id;
     }
 
-    public JpaEntityPatient setId(UUID id) {
+    public PatientJpaEntity setId(UUID id) {
         this.id = id;
         return this;
     }
@@ -41,7 +49,7 @@ public class JpaEntityPatient {
         return nom;
     }
 
-    public JpaEntityPatient setNom(String nom) {
+    public PatientJpaEntity setNom(String nom) {
         this.nom = nom;
         return this;
     }
@@ -51,7 +59,7 @@ public class JpaEntityPatient {
         return dateNaissance;
     }
 
-    public JpaEntityPatient setDateNaissance(LocalDate dateNaissance) {
+    public PatientJpaEntity setDateNaissance(LocalDate dateNaissance) {
         this.dateNaissance = dateNaissance;
         return this;
     }
@@ -60,7 +68,7 @@ public class JpaEntityPatient {
         return typePompe;
     }
 
-    public JpaEntityPatient setTypePompe(TypePompe typePompe) {
+    public PatientJpaEntity setTypePompe(TypePompe typePompe) {
         this.typePompe = typePompe;
         return this;
     }
