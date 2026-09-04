@@ -2,18 +2,16 @@ package com.example.diabcare.patient.infrastructure.primary;
 
 import com.example.diabcare.patient.domain.Patient;
 import com.example.diabcare.patient.domain.TypePompe;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 
 import java.time.LocalDate;
 
 @Builder
-@AllArgsConstructor
-public class RestRequestPatient {
-
-    private String nom;
-    private LocalDate dateNaissance;
-    private TypePompe typePompe;
+public record RestRequestPatient(
+    String nom,
+    LocalDate dateNaissance,
+    TypePompe typePompe
+) {
 
     public static RestRequestPatient of(Patient patient) {
         return RestRequestPatient.builder()

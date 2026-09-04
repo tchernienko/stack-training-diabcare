@@ -1,20 +1,21 @@
 package com.example.diabcare.patient.infrastructure.primary;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.UUID;
 
-@Getter
-@AllArgsConstructor
-@EqualsAndHashCode
-public class RestPatientId {
+public record RestPatientId(UUID value) {
 
-    private UUID value;
-
+    @JsonCreator
     public static RestPatientId of(UUID patientId) {
         return new RestPatientId(patientId);
+    }
+
+    @Override
+    @JsonValue
+    public UUID value() {
+        return value;
     }
 
 }

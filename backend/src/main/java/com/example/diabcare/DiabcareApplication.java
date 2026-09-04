@@ -1,9 +1,9 @@
-package com.example.diabcare.bootstrap;
+package com.example.diabcare;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages = "com.example.diabcare")
+@SpringBootApplication
 public class DiabcareApplication {
 
     static void main(String[] args) {

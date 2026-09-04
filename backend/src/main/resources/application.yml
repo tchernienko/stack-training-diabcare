@@ -3,9 +3,13 @@ spring:
     name: diabcare-api
   jmx:
     enabled: false
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
 
   datasource:
-    url: jdbc:h2:mem:diabcare
+    url: jdbc:h2:file:./data/db/diabcare
     username: ${DB_USER:SA}
     password: ${DB_PASSWORD:}
     hikari:
@@ -14,7 +18,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update # OK pour un projet d'apprentissage solo ; à remplacer par Flyway/Liquibase si un jour vous voulez pratiquer les migrations versionnées
+      ddl-auto: update # OK pour un projet d'apprentissage solo ; à remplacer par Flyway/Liquibase pour les migrations versionnées
     properties:
       hibernate:
         format_sql: true
@@ -42,8 +46,7 @@ spring:
 
 logging:
   file:
-    path: target/logs
-    name: diabcare.log
+    name: ./data/logs/diabcare.log
   console:
     enabled: true
   level:

@@ -4,7 +4,10 @@ import com.example.diabcare.patient.domain.Patient;
 import com.example.diabcare.patient.domain.PatientId;
 import com.example.diabcare.patient.domain.TypePompe;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -12,6 +15,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
+@Table(name = "patient")
 public class PatientJpaEntity {
 
     private UUID id;
@@ -64,6 +68,7 @@ public class PatientJpaEntity {
         return this;
     }
 
+    @Enumerated(value = EnumType.STRING)
     public TypePompe getTypePompe() {
         return typePompe;
     }

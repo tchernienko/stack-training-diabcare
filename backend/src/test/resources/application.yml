@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: diabcare-api
+  jmx:
+    enabled: false
+
+  datasource:
+    url: jdbc:h2:file:./data/db/diabcare
+    username: ${DB_USER:SA}
+    password: ${DB_PASSWORD:}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 1
+
+  jpa:
+    hibernate:
+      ddl-auto: create # OK pour un projet d'apprentissage solo ; à remplacer par Flyway/Liquibase pour les migrations versionnées
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: false
+    open-in-view: false
+
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8081/realms/diabcare}
+
+#  kafka:
+#    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+#    consumer:
+#      group-id: diabcare-backend
+#      auto-offset-reset: earliest
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+#      properties:
+#        spring.json.trusted.packages: "com.example.diabcare.*"
+#    producer:
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+logging:
+  file:
+    name: ./target/data/logs/test-diabcare.log
+  console:
+    enabled: true
+
