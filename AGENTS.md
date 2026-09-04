@@ -4,11 +4,11 @@
 
 Projet personnel d'apprentissage d'une nouvelle stack technique (pas un projet de production, pas de charge réelle — solo, local).
 
-**Objectif réel** : rattraper un retard sur Spring Boot, l'architecture hexagonale, DDD, l'outillage Node et les frameworks frontend modernes (React/Angular), dans le but de redevenir employable sur des offres fullstack Java + frontend moderne. Le métier (gestion de patients diabétiques type 1, RDV, matériel, fournisseurs) a été choisi volontairement simple pour ne pas avoir à apprendre un domaine métier complexe en plus de la stack technique.
+**Objectif réel** : rattraper un retard sur Spring Boot, l'architecture hexagonale, DDD, l'outillage Node et les frameworks frontend modernes (Angular), dans le but de redevenir employable sur des offres fullstack Java + frontend moderne. Le métier (gestion de patients diabétiques type 1, RDV, matériel, fournisseurs) a été choisi volontairement simple pour ne pas avoir à apprendre un domaine métier complexe en plus de la stack technique.
 
 **Stack cible** :
 - Backend : Java 25, Spring Boot, Maven (un seul module, uber jar — pas de multi-module Maven), architecture hexagonale (adapters primary/driving et secondary/driven) + DDD
-- Frontend : Angular, TypeScript, Tailwind CSS, PWA
+- Frontend : Angular, TypeScript, Tailwind CSS, PWA, Vitest (tests unitaires — Karma est en fin de vie, remplacé par le nouveau unit-test builder Angular basé sur Vitest)
 - Données/infra : MySQL, Keycloak (mono-realm, rôles : patient, soignant, coordinateur, admin), Kafka, Docker/docker-compose (déploiement local uniquement), GitLab CI, Prettier
 - Architecture applicative : monolithe modulaire (pas de microservices pour l'instant), 4-5 bounded contexts DDD dont Fournisseur et Notification
 - Frontend et backend séparés, communication REST

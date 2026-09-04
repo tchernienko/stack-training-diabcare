@@ -54,14 +54,11 @@ services:
       - keycloak
 
   frontend:
-    build: ./frontend
-    environment:
-      NEXT_PUBLIC_API_URL: http://localhost:8080
-      NEXT_PUBLIC_KEYCLOAK_URL: http://localhost:8081
-      NEXT_PUBLIC_KEYCLOAK_REALM: diabcare
-      NEXT_PUBLIC_KEYCLOAK_CLIENT_ID: diabcare-frontend
+    build: ./frontend-angular
+    # Pas de variables d'environnement ici : la config (URL Keycloak, realm, client ID)
+    # vit dans environment.ts / environment.prod.ts (voir US4), compilée au build Angular.
     ports:
-      - "3000:3000"
+      - "4200:4200"
     depends_on:
       - backend
 

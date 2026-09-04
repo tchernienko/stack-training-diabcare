@@ -13,13 +13,13 @@ tags:
   - keycloak
   - docker
   - typescript
-  - react
+  - angular
   - tailwind
 ---
 # Projet d'entrainement/apprentissage
 
 Monolithe modulaire (DDD / hexagonal, primary/secondary), Spring Boot 4 / Java 25,
-MySQL, Kafka, Keycloak (mono-realm), frontend Next.js/TypeScript/Tailwind (PWA).
+MySQL, Kafka, Keycloak (mono-realm), frontend Angular/TypeScript/Tailwind (PWA).
 
 Pour s'habituer à la stack.
 
@@ -37,8 +37,10 @@ permet de gérer pas mal de choses.
 - `backend/pom.xml` — dépendances Maven (Spring Boot 4.1, Kafka, OAuth2 resource server, ArchUnit)
 - `backend/src/main/java/.../bootstrap/DiabcareApplication.java` — point d'entrée Spring Boot
 - `backend/src/main/resources/application.yml` — config datasource / kafka / issuer Keycloak
-- `frontend/` — squelette Next.js + TypeScript + Tailwind + manifest PWA (aucune page métier)
-- `docker-compose.yml`, `backend/Dockerfile`, `frontend/Dockerfile`
+- `frontend-angular/` — squelette Angular + TypeScript + Tailwind + manifest PWA (aucune page métier).
+  `frontend-react/` est un premier essai React/Next.js, mis de côté pour l'instant (cf. `AGENTS.md`,
+  stack cible = Angular).
+- `docker-compose.yml`, `frontend-angular/Dockerfile`
 - `infra/keycloak/realm-export.json` — realm `diabcare`, 4 rôles, client `diabcare-frontend` (PKCE)
 - `.gitlab-ci.yml` — pipeline build (backend + frontend), stage test à compléter (US12)
 
@@ -56,6 +58,7 @@ Voir [ici](../docs/user-stories.md) pour le détail des US (champs, endpoints, r
 ```bash
 docker compose up -d mysql kafka keycloak   # infra seule, pour développer le backend en local
 cd backend && mvn spring-boot:run
+cd frontend-angular && npm start             # ng serve, http://localhost:4200
 ```
 
 

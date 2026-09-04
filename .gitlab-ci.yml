@@ -24,6 +24,6 @@ backend-test:
 
 frontend-build:
   stage: build
-  image: node:22-alpine
+  image: node:26-alpine
   script:
-    - cd frontend && npm install && npm run build
+    - cd frontend-angular && npm install && npm run build
