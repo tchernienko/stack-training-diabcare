@@ -1,25 +1,35 @@
 spring:
   application:
     name: diabcare-api
+  jmx:
+    enabled: false
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
 
   datasource:
-    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:diabcare}
-    username: ${DB_USER:diabcare}
-    password: ${DB_PASSWORD:diabcare}
+    url: jdbc:h2:file:./data/db/diabcare
+    username: ${DB_USER:SA}
+    password: ${DB_PASSWORD:}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 1
 
   jpa:
     hibernate:
-      ddl-auto: update # OK pour un projet d'apprentissage solo ; à remplacer par Flyway/Liquibase si un jour vous voulez pratiquer les migrations versionnées
+      ddl-auto: update # OK pour un projet d'apprentissage solo ; à remplacer par Flyway/Liquibase pour les migrations versionnées
     properties:
       hibernate:
         format_sql: true
     show-sql: true
+    open-in-view: false
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8081/realms/diabcare}
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8081/realms/diabcare}
 
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
@@ -33,6 +43,17 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+logging:
+  file:
+    name: ./data/logs/diabcare.log
+  console:
+    enabled: true
+  level:
+    root: debug
+    javax.management: error
+    sun.rmi.loader: error
+    sun.rmi.transport: error
 
 server:
   port: 8080

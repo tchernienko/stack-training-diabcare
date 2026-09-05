@@ -47,8 +47,8 @@ controller. Un `Patient` invalide ne doit pas pouvoir exister en mémoire.
 - 400 si validation échoue (nom vide, date future, type de pompe absent)
 
 **Critères d'acceptation**
-- Un `soignant` qui appelle cet endpoint reçoit 403 (cf. US6).
-- Le patient est persisté en base MySQL (table à votre convention, ex. `patient`).
+- Un `soignant` qui appelle cet endpoint reçoit 403 (cf. US6). Attention, pas de rôle existant à ce stade donc critère pas pertinent.
+- Le patient est persisté en base (table à votre convention, ex. `patient`).
 
 ### US2 — Le soignant (et le coordinateur) consulte la liste des patients
 
@@ -60,9 +60,13 @@ controller. Un `Patient` invalide ne doit pas pouvoir exister en mémoire.
 `GET /patients/{id}` — même rôle
 - 200 si trouvé, 404 sinon
 
-**Frontend** (`frontend/src/app/patients`)
-- Page listant les patients (appel `GET /patients`), tableau simple avec nom / date de naissance / type de pompe.
-- Formulaire de création (US1) réservé aux coordinateurs — cachez ou désactivez le bouton si le rôle courant ne l'a pas (l'autorisation réelle reste côté backend, l'UI n'est qu'un confort).
+**Frontend** (`frontend-angular/src/app/patients`)
+- Composant Angular listant les patients (appel `GET /patients` via un service Angular
+  dédié — `HttpClient`), tableau simple avec nom / date de naissance / type de pompe.
+- Route déclarée dans le routing Angular (`app.routes.ts` ou module de routing dédié selon votre
+  organisation).
+- Formulaire de création (US1) réservé aux coordinateurs — cachez ou désactivez le bouton si le rôle
+  courant ne l'a pas (l'autorisation réelle reste côté backend, l'UI n'est qu'un confort).
 
 ---
 
@@ -98,7 +102,8 @@ levez une exception métier, mappez-la en 400 côté controller.
 - 200, liste des RDV du patient
 
 **Frontend** (`frontend/src/app/rdv`)
-- Formulaire de planification (sélection d'un patient existant + date/heure), réservé coordinateur.
+- Formulaire de planification (sélection d'un patient existant + date/heure) en composant Angular,
+  réservé coordinateur.
 
 ---
 
@@ -106,16 +111,21 @@ levez une exception métier, mappez-la en 400 côté controller.
 
 ### US4 — Connexion OIDC côté frontend
 
-**Package** : `frontend/src/lib` (intégration Keycloak), `backend/bootstrap/security`
+**Package** : `frontend/src/app/core` ou équivalent (intégration Keycloak), `backend/bootstrap/security`
 
 **Frontend**
-- Intégrez `keycloak-js` (déjà en dépendance dans `package.json`) : initialisation avec les variables
-  d'environnement déjà câblées dans `docker-compose.yml` (`NEXT_PUBLIC_KEYCLOAK_URL`,
-  `NEXT_PUBLIC_KEYCLOAK_REALM`, `NEXT_PUBLIC_KEYCLOAK_CLIENT_ID`).
+- Intégrez Keycloak côté Angular — soit via `keycloak-js` directement (utile pour bien voir ce qui
+  se passe sous le capot, cohérent avec l'objectif d'apprentissage), soit via `keycloak-angular` qui
+  encapsule l'intégration avec les mécanismes Angular (guards de route, intercepteur HTTP). À vous
+  de choisir selon si vous préférez comprendre le flow brut ou l'idiome Angular habituel.
+- Configuration via `environment.ts` / `environment.prod.ts` (URL Keycloak, realm, client ID) plutôt
+  que des variables d'environnement au build — cohérent avec les conventions Angular, déjà câblées
+  dans `docker-compose.yml`.
 - Flow standard (Authorization Code + PKCE, déjà activé côté client `diabcare-frontend` dans le
   realm) : redirection vers Keycloak, retour avec un token, stockage en mémoire (pas de
   localStorage — évitez d'exposer le JWT au XSS).
-- Chaque appel vers le backend porte le JWT en `Authorization: Bearer <token>`.
+- Chaque appel vers le backend porte le JWT en `Authorization: Bearer <token>` — un `HttpInterceptor`
+  Angular est le point naturel pour l'ajouter automatiquement à chaque requête sortante.
 
 **Backend**
 - Configurez Spring Security comme *resource server* (`spring-boot-starter-oauth2-resource-server`,
