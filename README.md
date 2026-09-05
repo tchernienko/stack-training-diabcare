@@ -35,7 +35,7 @@ permet de gérer pas mal de choses.
 ## Ce qui est déjà en place (le socle)
 
 - `backend/pom.xml` — dépendances Maven (Spring Boot 4.1, Kafka, OAuth2 resource server, ArchUnit)
-- `backend/src/main/java/.../bootstrap/DiabcareApplication.java` — point d'entrée Spring Boot
+- `backend/src/main/java/.../DiabcareApplication.java` — point d'entrée Spring Boot
 - `backend/src/main/resources/application.yml` — config datasource / kafka / issuer Keycloak
 - `frontend-angular/` — squelette Angular + TypeScript + Tailwind + manifest PWA (aucune page métier).
   `frontend-react/` est un premier essai React/Next.js, mis de côté pour l'instant (cf. `AGENTS.md`,

@@ -13,6 +13,29 @@ Projet personnel d'apprentissage d'une nouvelle stack technique (pas un projet d
 - Architecture applicative : monolithe modulaire (pas de microservices pour l'instant), 4-5 bounded contexts DDD dont Fournisseur et Notification
 - Frontend et backend séparés, communication REST
 
+## Commandes — backend (module Maven `api`)
+
+Le `java` par défaut du poste est en 11 et `mvn` tourne dessus → **ne jamais lancer `mvn` nu**.
+Le `~/.m2/toolchains.xml` (JDK 17) est un vieux reste d'anciens projets de test, sans rapport avec
+ce projet — l'ignorer.
+
+- JDK du projet : `/storage/java-dev/jdks/jdk-25.0.4+7`
+- Maven : `/storage/java-dev/tools/apache-maven-3.8.6/bin/mvn`
+- Toujours passer par `JAVA_HOME` sur toute la commande `mvn` (sinon le fork surefire repart en 11).
+- `-o` (offline) par défaut : les dépendances bougent peu, et quand j'en ajoute une je mets à jour
+  le `pom.xml` et je lance le build moi-même.
+
+Commande de référence, depuis `backend/` :
+
+    JAVA_HOME=/storage/java-dev/jdks/jdk-25.0.4+7 \
+      /storage/java-dev/tools/apache-maven-3.8.6/bin/mvn \
+      -q --no-transfer-progress -o test -Dtest=MaClasseTest
+
+- Le résumé (`Tests run: …`) est masqué par `-q` sur stdout → le lire dans
+  `target/surefire-reports/*.txt`. Sinon retirer `-q` et filtrer : `grep -E 'Tests run:|BUILD|ERROR'`.
+- Juste vérifier que ça compile : `test-compile` au lieu de `test`.
+- Erreurs de compilation sur un fichier ouvert dans l'IDE : préférer les diagnostics IDE (aucun build).
+
 ## Conversation
 Le ton doit être chaleureux, bienveillant sans excès et sans exagération.
 

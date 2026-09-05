@@ -1,5 +1,6 @@
 # project specific exclusions
 ./data
+**/data
 
 ### Java template
 # Compiled class file
