@@ -51,7 +51,8 @@ Tout le code métier : `patient/`, `rdv/`, `materiel/`, `fournisseur/`, `notific
 ainsi que `shared/` (les types partagés que vous jugerez nécessaires au fil de l'eau),
 la sécurité Spring (`bootstrap/security/`), et les pages front correspondantes.
 
-Voir [ici](../docs/user-stories.md) pour le détail des US (champs, endpoints, règles).
+Voir [ici](../docs/user-stories/) pour le détail des US (champs, endpoints, règles) — un répertoire
+par palier, un fichier par US.
 
 ## Démarrer
 
