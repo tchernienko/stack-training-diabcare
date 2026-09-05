@@ -11,12 +11,15 @@ import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @Import({DbPatientRepositoryImpl.class})
 class DbPatientRepositoryImplTest {
+
+    //TODO ajouter un cas de test pour quand la base est vide (pas de patient), doit retourner une liste vide, pas null
 
     @Autowired
     private DbPatientRepositoryImpl repository;
@@ -61,6 +64,26 @@ class DbPatientRepositoryImplTest {
                 .getSingleResult();
         assertThat(value).isEqualTo("PATCH");
 
+    }
+
+    //TODO attention ce test utilise getFirst, penser à changer s'il faut ajouter d'autres patients à ce test.
+    // suffisant pour l'instant
+    @Test
+    void shouldFindAllPatients() {
+        Patient testPatient = testPatientBuilder.build();
+        entityManager.persist(PatientJpaEntity.of(testPatient));
+        entityManager.flush();
+        entityManager.clear();
+
+        List<Patient> patients = repository.findAll();
+        assertThat(patients).hasSize(1);
+
+        Patient firstPatient = patients.getFirst();
+
+        assertThat(firstPatient.getId().getValue()).isEqualTo(testPatient.getId().getValue());
+        assertThat(firstPatient.getNom()).isEqualTo(testPatient.getNom());
+        assertThat(firstPatient.getDateNaissance()).isEqualTo(testPatient.getDateNaissance());
+        assertThat(firstPatient.getTypePompe()).isEqualTo(TypePompe.PATCH);
     }
 
 }

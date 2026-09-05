@@ -2,6 +2,9 @@ package com.example.diabcare.patient.infrastructure.primary;
 
 import com.example.diabcare.patient.application.PatientApplicationService;
 import com.example.diabcare.patient.domain.Patient;
+import com.example.diabcare.patient.domain.PatientId;
+import com.example.diabcare.patient.domain.TypePompe;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -12,11 +15,13 @@ import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @WebMvcTest(PatientResource.class)
 class PatientResourceTest {
@@ -30,8 +35,16 @@ class PatientResourceTest {
     @MockitoBean
     private PatientApplicationService patientApplicationService;
 
-//    @Autowired
-//    private ObjectMapper objectMapper;
+    private Patient.PatientBuilder testPatientBuilder;
+
+    @BeforeEach
+    void setUp() {
+        testPatientBuilder = Patient.builder()
+            .id(PatientId.newOne())
+            .nom("test")
+            .dateNaissance(LocalDate.of(2014, 11, 27))
+            .typePompe(TypePompe.PATCH);
+    }
 
     @Test
     void shouldCreatePatient() {
@@ -150,6 +163,19 @@ class PatientResourceTest {
 
     }
 
+    @Test
+    void shouldFindAllPatients() {
 
+        when(patientApplicationService.findAll()).thenReturn(List.of(testPatientBuilder.build()));
+
+        var result = assertThat(
+                mockMvcTester.get().uri("/patients")
+        );
+        result.hasStatus(HttpStatus.OK);
+        result.bodyJson().extractingPath("$").asArray().hasSize(1);
+        result.bodyJson().extractingPath("$[0].nom").isEqualTo("test");
+
+
+    }
 
 }

@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class PatientApplicationService {
@@ -14,6 +16,10 @@ public class PatientApplicationService {
     @Transactional
     public void save(Patient patient) {
         repository.save(patient);
+    }
+
+    public List<Patient> findAll() {
+        return repository.findAll();
     }
 
 
