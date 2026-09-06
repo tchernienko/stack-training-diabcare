@@ -12,17 +12,19 @@ import org.springframework.context.annotation.Import;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
-@Import({DbPatientRepositoryImpl.class})
-class DbPatientRepositoryImplTest {
+@Import({DbPatientRepositoryAdapter.class})
+class DbPatientRepositoryAdapterTest {
 
     //TODO ajouter un cas de test pour quand la base est vide (pas de patient), doit retourner une liste vide, pas null
 
     @Autowired
-    private DbPatientRepositoryImpl repository;
+    private DbPatientRepositoryAdapter repository;
 
     @Autowired
     private TestEntityManager entityManager;
@@ -84,6 +86,23 @@ class DbPatientRepositoryImplTest {
         assertThat(firstPatient.getNom()).isEqualTo(testPatient.getNom());
         assertThat(firstPatient.getDateNaissance()).isEqualTo(testPatient.getDateNaissance());
         assertThat(firstPatient.getTypePompe()).isEqualTo(TypePompe.PATCH);
+    }
+
+    @Test
+    void shouldFindPatientById() {
+        Patient testPatient = testPatientBuilder.build();
+        entityManager.persist(PatientJpaEntity.of(testPatient));
+        entityManager.flush();
+        entityManager.clear();
+
+        Optional<Patient> result = repository.findById(testPatient.getId());
+        assertThat(result).hasValue(testPatient);
+    }
+
+    @Test
+    void shouldReturnEmptyOptionalWhenNoPatientFound() {
+        Optional<Patient> result = repository.findById(PatientId.of(UUID.randomUUID()));
+        assertThat(result).isEmpty();
     }
 
 }

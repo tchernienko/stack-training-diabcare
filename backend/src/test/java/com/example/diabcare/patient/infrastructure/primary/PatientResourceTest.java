@@ -1,6 +1,7 @@
 package com.example.diabcare.patient.infrastructure.primary;
 
 import com.example.diabcare.patient.application.PatientApplicationService;
+import com.example.diabcare.patient.application.PatientNotFoundException;
 import com.example.diabcare.patient.domain.Patient;
 import com.example.diabcare.patient.domain.PatientId;
 import com.example.diabcare.patient.domain.TypePompe;
@@ -16,6 +17,7 @@ import org.springframework.test.web.servlet.assertj.MockMvcTester;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -176,6 +178,26 @@ class PatientResourceTest {
         result.bodyJson().extractingPath("$[0].nom").isEqualTo("test");
 
 
+    }
+
+    @Test
+    void shouldFindPatientById() {
+        Patient testPatient = testPatientBuilder.build();
+        when(patientApplicationService.findById(any(PatientId.class))).thenReturn(testPatient);
+        var result = assertThat(mockMvcTester.get().uri("/patients/" + testPatient.getId().getValue()));
+        result.hasStatus(HttpStatus.OK);
+        result.bodyJson().extractingPath("$.nom").isEqualTo("test");
+    }
+
+    @Test
+    void shouldReturn404OnPatientNotFound() {
+        UUID idToFind = UUID.randomUUID();
+        when(patientApplicationService.findById(any(PatientId.class))).thenThrow(new PatientNotFoundException(idToFind, "Pas de patient avec cet id: %s".formatted(idToFind)));
+        var result = assertThat(
+                mockMvcTester.get().uri("/patients/" + idToFind)
+        );
+        result.hasStatus(HttpStatus.NOT_FOUND);
+        result.bodyJson().extractingPath("$.idNotFound").isEqualTo(idToFind.toString());
     }
 
 }
