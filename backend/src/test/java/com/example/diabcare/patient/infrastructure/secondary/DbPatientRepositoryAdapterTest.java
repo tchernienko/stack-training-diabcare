@@ -21,8 +21,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Import({DbPatientRepositoryAdapter.class})
 class DbPatientRepositoryAdapterTest {
 
-    //TODO ajouter un cas de test pour quand la base est vide (pas de patient), doit retourner une liste vide, pas null
-
     @Autowired
     private DbPatientRepositoryAdapter repository;
 
@@ -40,6 +38,11 @@ class DbPatientRepositoryAdapterTest {
                 .typePompe(TypePompe.PATCH);
     }
 
+    @Test
+    void shouldReturnEmptyOnEmptyDB() {
+        List<Patient> result = repository.findAll();
+        assertThat(result).isEmpty();
+    }
 
     @Test
     void shouldSavePatient() {
