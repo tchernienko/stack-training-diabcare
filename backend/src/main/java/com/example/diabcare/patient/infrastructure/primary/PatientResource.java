@@ -5,6 +5,7 @@ import com.example.diabcare.patient.domain.Patient;
 import com.example.diabcare.patient.domain.PatientId;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,7 +43,7 @@ public class PatientResource {
                 .body(RestResponsePatient.of(patient));
     }
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<RestResponsePatient>> getPatients() {
         //TODO gerer la pagination? le tri?
         List<Patient> patients = patientApplicationService.findAll();
@@ -56,7 +57,7 @@ public class PatientResource {
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "/{id}",  produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RestResponsePatient> getPatientById(@PathVariable UUID id) {
         var result = patientApplicationService.findById(PatientId.of(id));
         return ResponseEntity.status(HttpStatus.OK).body(RestResponsePatient.of(result));
