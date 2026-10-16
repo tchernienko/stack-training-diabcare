@@ -8,6 +8,12 @@
 `GET /patients/{id}` — même rôle
 - 200 si trouvé, 404 sinon
 
+Le contrôle de rôle (`soignant` ou `coordinateur` requis) n'existe pas encore à ce stade — aucune
+sécurité n'est en place avant le palier 3. Voir
+[US6](../palier-3-securite-keycloak/us06-soignant-refuse-creation-patient.md) pour le cas négatif
+déjà spécifié côté création ; aucun cas négatif équivalent n'est encore spécifié pour la lecture
+(`GET /patients`), à ajouter si besoin une fois Keycloak posé.
+
 **Frontend** (`frontend-angular/src/app/patients`)
 - Composant Angular listant les patients (appel `GET /patients` via un service Angular
   dédié — `HttpClient`), tableau simple avec nom / date de naissance / type de pompe.
