@@ -1,0 +1,11 @@
+<p>patient-details works!</p>
+@if (patient(); as templatePatient) {
+<div>
+  <hr />
+  <h2>{{ templatePatient.nom }}</h2>
+  <p>{{ templatePatient.dateNaissance}}</p>
+  <p>{{ templatePatient.typePompe}}</p>
+</div>
+} @else {
+  <div>unknown patient...</div>
+}

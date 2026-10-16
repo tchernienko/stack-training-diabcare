@@ -1,0 +1,8 @@
+<p>patients-list works!</p>
+<ul>
+  @for (patient of getPatients()(); track patient.id) {
+    <li>
+      <app-patient-item [patient]="patient" />
+    </li>
+  }
+</ul>
