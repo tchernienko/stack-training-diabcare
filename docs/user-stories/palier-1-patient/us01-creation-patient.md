@@ -22,8 +22,12 @@ controller. Un `Patient` invalide ne doit pas pouvoir exister en mémoire.
 - 400 si validation échoue (nom vide, date future, type de pompe absent)
 
 **Critères d'acceptation**
-- Un `soignant` qui appelle cet endpoint reçoit 403 (cf. US6). Attention, pas de rôle existant à ce stade donc critère pas pertinent.
 - Le patient est persisté en base (table à votre convention, ex. `patient`).
+
+Le contrôle de rôle (`coordinateur` requis, `soignant` refusé en 403) n'existe pas encore à ce
+stade — aucune sécurité n'est en place avant le palier 3. Voir
+[US6](../palier-3-securite-keycloak/us06-soignant-refuse-creation-patient.md), qui couvre déjà ce
+cas une fois Keycloak posé.
 
 **Concepts et notions concernées**
 - DDD / hexagonal : agrégat, invariant métier porté par le constructeur/factory (pas de setter), value object vs entity, séparation domain / application / infrastructure.
