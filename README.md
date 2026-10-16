@@ -14,12 +14,12 @@ tags:
   - docker
   - typescript
   - angular
-  - tailwind
+  - angular material
 ---
 # Projet d'entrainement/apprentissage
 
 Monolithe modulaire (DDD / hexagonal, primary/secondary), Spring Boot 4 / Java 25,
-MySQL, Kafka, Keycloak (mono-realm), frontend Angular/TypeScript/Tailwind (PWA).
+MySQL, Kafka, Keycloak (mono-realm), frontend Angular/TypeScript/Angular Material (PWA).
 
 Pour s'habituer à la stack.
 
@@ -37,7 +37,7 @@ permet de gérer pas mal de choses.
 - `backend/pom.xml` — dépendances Maven (Spring Boot 4.1, Kafka, OAuth2 resource server, ArchUnit)
 - `backend/src/main/java/.../DiabcareApplication.java` — point d'entrée Spring Boot
 - `backend/src/main/resources/application.yml` — config datasource / kafka / issuer Keycloak
-- `frontend-angular/` — squelette Angular + TypeScript + Tailwind + manifest PWA (aucune page métier).
+- `frontend-angular/` — squelette Angular + TypeScript + Angular Material + manifest PWA (aucune page métier).
   `frontend-react/` est un premier essai React/Next.js, mis de côté pour l'instant (cf. `AGENTS.md`,
   stack cible = Angular).
 - `docker-compose.yml`, `frontend-angular/Dockerfile`

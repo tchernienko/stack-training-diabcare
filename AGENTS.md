@@ -8,7 +8,7 @@ Projet personnel d'apprentissage d'une nouvelle stack technique (pas un projet d
 
 **Stack cible** :
 - Backend : Java 25, Spring Boot, Maven (un seul module, uber jar — pas de multi-module Maven), architecture hexagonale (adapters primary/driving et secondary/driven) + DDD
-- Frontend : Angular, TypeScript, Tailwind CSS, PWA, Vitest (tests unitaires — Karma est en fin de vie, remplacé par le nouveau unit-test builder Angular basé sur Vitest)
+- Frontend : Angular, TypeScript, Angular Material (Material Design ; thème préfabriqué Indigo/Pink, typographie Roboto globale), zoneless (pas de `zone.js`, `provideZonelessChangeDetection()`), PWA, Vitest (tests unitaires — Karma est en fin de vie, remplacé par le nouveau unit-test builder Angular basé sur Vitest)
 - Données/infra : MySQL, Keycloak (mono-realm, rôles : patient, soignant, coordinateur, admin), Kafka, Docker/docker-compose (déploiement local uniquement), GitLab CI, Prettier
 - Architecture applicative : monolithe modulaire (pas de microservices pour l'instant), 4-5 bounded contexts DDD dont Fournisseur et Notification
 - Frontend et backend séparés, communication REST
@@ -35,6 +35,20 @@ Commande de référence, depuis `backend/` :
   `target/surefire-reports/*.txt`. Sinon retirer `-q` et filtrer : `grep -E 'Tests run:|BUILD|ERROR'`.
 - Juste vérifier que ça compile : `test-compile` au lieu de `test`.
 - Erreurs de compilation sur un fichier ouvert dans l'IDE : préférer les diagnostics IDE (aucun build).
+
+## Commandes — frontend (`frontend-angular/`)
+
+`node` / `npm` ne sont **pas** dans le PATH. Version du projet : `.nvmrc` → `v26.8.1`.
+
+- Node : `/storage/java-dev/tools/node-v26.8.1-linux-x64/bin` (à mettre en tête de PATH).
+- Exécutable Angular : `./node_modules/.bin/ng`.
+
+Depuis `frontend-angular/`, en préfixant `export PATH="/storage/java-dev/tools/node-v26.8.1-linux-x64/bin:$PATH"` :
+
+    ./node_modules/.bin/ng build --configuration development   # compile, rapide, sans budgets
+    ./node_modules/.bin/ng build                               # prod, vérifie les budgets
+    ./node_modules/.bin/ng test --watch=false                  # tests unitaires (Vitest)
+    ./node_modules/.bin/ng serve --port <p>                    # smoke test (proxy /api → :8080)
 
 ## Conversation
 Le ton doit être chaleureux, bienveillant sans excès et sans exagération.
