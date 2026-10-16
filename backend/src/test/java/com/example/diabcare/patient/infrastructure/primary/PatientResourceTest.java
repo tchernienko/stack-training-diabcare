@@ -54,7 +54,7 @@ class PatientResourceTest {
                 {"nom":"test","dateNaissance":"2014-11-27", "typePompe":"PATCH"}""";
         var result = assertThat(
                 mockMvcTester.post()
-                        .uri("/patients")
+                        .uri("/api/patients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body)
         )
@@ -79,7 +79,7 @@ class PatientResourceTest {
                 {"dateNaissance":"2014-11-27", "typePompe":"PATCH"}""";
         var result = assertThat(
                 mockMvcTester.post()
-                        .uri("/patients")
+                        .uri("/api/patients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body)
         );
@@ -98,7 +98,7 @@ class PatientResourceTest {
                 {"nom": "test", "typePompe":"PATCH"}""";
         var result = assertThat(
                 mockMvcTester.post()
-                        .uri("/patients")
+                        .uri("/api/patients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body)
         );
@@ -118,7 +118,7 @@ class PatientResourceTest {
                 {"nom": "test", "dateNaissance": "%s", "typePompe":"PATCH"}""".formatted(futureDateNaissance);
         var result = assertThat(
                 mockMvcTester.post()
-                        .uri("/patients")
+                        .uri("/api/patients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body)
         );
@@ -135,7 +135,7 @@ class PatientResourceTest {
                 {"nom": "test", "dateNaissance": "2014-11-27", "typePompe":"PATCHOUNET"}""";
         var result = assertThat(
                 mockMvcTester.post()
-                        .uri("/patients")
+                        .uri("/api/patients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body)
         );
@@ -154,7 +154,7 @@ class PatientResourceTest {
                 {"nom": "test", "dateNaissance": "2014-11-27"}""";
         var result = assertThat(
                 mockMvcTester.post()
-                        .uri("/patients")
+                        .uri("/api/patients")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(body)
         );
@@ -171,7 +171,7 @@ class PatientResourceTest {
         when(patientApplicationService.findAll()).thenReturn(List.of(testPatientBuilder.build()));
 
         var result = assertThat(
-                mockMvcTester.get().uri("/patients")
+                mockMvcTester.get().uri("/api/patients")
         );
         result.hasStatus(HttpStatus.OK);
         result.bodyJson().extractingPath("$").asArray().hasSize(1);
@@ -184,7 +184,7 @@ class PatientResourceTest {
     void shouldFindPatientById() {
         Patient testPatient = testPatientBuilder.build();
         when(patientApplicationService.findById(any(PatientId.class))).thenReturn(testPatient);
-        var result = assertThat(mockMvcTester.get().uri("/patients/" + testPatient.getId().getValue()));
+        var result = assertThat(mockMvcTester.get().uri("/api/patients/" + testPatient.getId().getValue()));
         result.hasStatus(HttpStatus.OK);
         result.bodyJson().extractingPath("$.nom").isEqualTo("test");
     }
@@ -194,7 +194,7 @@ class PatientResourceTest {
         UUID idToFind = UUID.randomUUID();
         when(patientApplicationService.findById(any(PatientId.class))).thenThrow(new PatientNotFoundException(idToFind, "Pas de patient avec cet id: %s".formatted(idToFind)));
         var result = assertThat(
-                mockMvcTester.get().uri("/patients/" + idToFind)
+                mockMvcTester.get().uri("/api/patients/" + idToFind)
         );
         result.hasStatus(HttpStatus.NOT_FOUND);
         result.bodyJson().extractingPath("$.idNotFound").isEqualTo(idToFind.toString());
