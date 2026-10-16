@@ -18,6 +18,6 @@
 
 **Concepts et notions concernées**
 - Spring Boot : endpoints GET, projection en lecture (DTO simplifié), gestion du 404.
-- Angular : composants standalone, service `@Injectable`, `HttpClient`, `Observable` (RxJS) et consommation (`async` pipe vs `subscribe`), nouvelle syntaxe de contrôle de flux (`@for`/`@if`) vs `*ngFor`/`*ngIf`, routing (`provideRouter`, `Routes`).
+- Angular : composants standalone, service `@Injectable`, `HttpClient`, `Observable` (RxJS) et consommation (`async` pipe vs `subscribe`), nouvelle syntaxe de contrôle de flux (`@for`/`@if`) vs `*ngFor`/`*ngIf`, routing (`provideRouter`, `Routes`), Angular Material (modules `Mat*` importés dans le `imports:` de chaque composant standalone). Détail des écrans dans [docs/user-stories/frontend-angular/](../frontend-angular/).
 - TypeScript : interfaces pour typer les DTOs reçus du backend.
 - UX/autorisation : masquage conditionnel d'UI selon un rôle (à distinguer de la sécurité réelle, côté backend).

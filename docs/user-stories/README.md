@@ -30,6 +30,22 @@ Rappels d'architecture actés dans la conception (à respecter, pas à redécouv
 - [Palier 5 — Matériel + Fournisseur](palier-5-materiel-fournisseur/) : [US9](palier-5-materiel-fournisseur/us09-assignation-materiel.md), [US10](palier-5-materiel-fournisseur/us10-evenement-materiel-assigne.md)
 - [Palier 6 — CI/CD](palier-6-ci-cd/) : [US11](palier-6-ci-cd/us11-pipeline-ci.md), [US12](palier-6-ci-cd/us12-archunit-frontieres.md)
 
+## Frontend Angular
+
+Les US ci-dessus spécifient surtout le backend. Le détail des écrans Angular (paliers 1–2 côté
+front) vit dans un dossier dédié :
+
+- [Frontend Angular — écrans Patient](frontend-angular/) :
+  [proxy dev](frontend-angular/us-angular-01.md),
+  [liste](frontend-angular/us-angular-02.md),
+  [détail + 404](frontend-angular/us-angular-03.md),
+  [création](frontend-angular/us-angular-04.md),
+  [navigation](frontend-angular/us-angular-05.md)
+  — + US de renforcement (concepts déjà vus, pas encore acquis) :
+  [filtre de liste](frontend-angular/us-angular-06.md),
+  [titre d'onglet dynamique](frontend-angular/us-angular-07.md),
+  [Angular Material](frontend-angular/us-angular-08.md) (non prioritaire)
+
 ## Ordre suggéré
 
 US1 → US2 → US3 → US4 → US5 → US6 → US7 → US8 → US9 → US10 → US11 → US12.
