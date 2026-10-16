@@ -4,7 +4,6 @@ import com.example.diabcare.patient.application.PatientNotFoundException;
 import com.example.diabcare.patient.domain.InvalidPatientParametersException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -21,7 +20,7 @@ public class PatientExceptionHandler {
         return detail;
     }
 
-    //cas pour le tpe de pompe inconnu ou json invalide
+    //cas pour le type de pompe inconnu ou json invalide
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ProblemDetail onUnreadableBody(HttpMessageNotReadableException e) {
         ProblemDetail detail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Corps de requête mal formé ou invalide");
