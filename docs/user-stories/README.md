@@ -28,6 +28,7 @@ Rappels d'architecture actés dans la conception (à respecter, pas à redécouv
 - [Palier 3 — Sécurité Keycloak (mono-realm, 4 rôles)](palier-3-securite-keycloak/) : [US4](palier-3-securite-keycloak/us04-connexion-oidc.md), [US5](palier-3-securite-keycloak/us05-rdv-personnels-patient.md), [US6](palier-3-securite-keycloak/us06-soignant-refuse-creation-patient.md)
 - [Palier 4 — Kafka](palier-4-kafka/) : [US7](palier-4-kafka/us07-evenement-rdv-planifie.md), [US8](palier-4-kafka/us08-consommateur-notification.md)
 - [Palier 5 — Matériel + Fournisseur](palier-5-materiel-fournisseur/) : [US9](palier-5-materiel-fournisseur/us09-assignation-materiel.md), [US10](palier-5-materiel-fournisseur/us10-evenement-materiel-assigne.md)
+  — + US de renforcement : [catalogue de références](palier-5-materiel-fournisseur/us13-catalogue-references.md)
 - [Palier 6 — CI/CD](palier-6-ci-cd/) : [US11](palier-6-ci-cd/us11-pipeline-ci.md), [US12](palier-6-ci-cd/us12-archunit-frontieres.md)
 
 ## Frontend Angular

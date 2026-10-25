@@ -5,8 +5,11 @@
 **`Fournisseur`** — champs : `id`, `nom` (non vide). Endpoint `POST /fournisseurs` (rôle
 `coordinateur`), `GET /fournisseurs` (rôle `soignant` ou `coordinateur`).
 
-**`Materiel`** — pas de gestion de stock : un `Materiel` représente une **assignation**, pas une
-entrée de stock.
+**`AssignationMateriel`** — pas de gestion de stock : cet agrégat représente une **assignation**,
+pas une entrée de stock. Le nom évite le terme nu `Materiel`, réservé à la notion de
+catalogue/référence introduite en [US13](us13-catalogue-references.md) (renforcement, non
+bloquante pour cette US — le champ `reference` ci-dessous reste un `String` libre tant qu'US13
+n'est pas traitée).
 
 | Champ | Type | Règle |
 |---|---|---|
