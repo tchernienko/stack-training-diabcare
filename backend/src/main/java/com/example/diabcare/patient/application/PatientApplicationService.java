@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -31,4 +32,7 @@ public class PatientApplicationService {
         );
     }
 
+    public boolean patientExiste(UUID value) {
+        return repositoryPort.findById(PatientId.of(value)).isPresent();
+    }
 }
