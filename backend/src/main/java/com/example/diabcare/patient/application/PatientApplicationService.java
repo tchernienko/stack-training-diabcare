@@ -28,7 +28,7 @@ public class PatientApplicationService {
     public Patient findById(PatientId id) throws PatientNotFoundException {
         Optional<Patient> result = repositoryPort.findById(id);
         return result.orElseThrow(
-            () -> new PatientNotFoundException(id.getValue(), "Pas de avec cet id %s".formatted(id))
+            () -> new PatientNotFoundException(id.getValue(), "Pas de patient avec cet id %s".formatted(id))
         );
     }
 
