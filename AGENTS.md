@@ -9,7 +9,7 @@ Projet personnel d'apprentissage d'une nouvelle stack technique (pas un projet d
 **Stack cible** :
 - Backend : Java 25, Spring Boot, Maven (un seul module, uber jar — pas de multi-module Maven), architecture hexagonale (adapters primary/driving et secondary/driven) + DDD
 - Frontend : Angular, TypeScript, Angular Material (Material Design ; thème préfabriqué Indigo/Pink, typographie Roboto globale), zoneless (pas de `zone.js`, `provideZonelessChangeDetection()`), PWA, Vitest (tests unitaires — Karma est en fin de vie, remplacé par le nouveau unit-test builder Angular basé sur Vitest)
-- Données/infra : MySQL, Keycloak (mono-realm, rôles : patient, soignant, coordinateur, admin), Kafka, Docker/docker-compose (déploiement local uniquement), GitLab CI, Prettier
+- Données/infra : Postgresql, Keycloak (mono-realm, rôles : patient, soignant, coordinateur, admin), Kafka, Docker/docker-compose (déploiement local uniquement), GitLab CI, Prettier
 - Architecture applicative : monolithe modulaire (pas de microservices pour l'instant), 4-5 bounded contexts DDD dont Fournisseur et Notification
 - Frontend et backend séparés, communication REST
 
