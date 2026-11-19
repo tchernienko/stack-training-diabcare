@@ -7,7 +7,7 @@
 | Champ | Type | Règle de validation |
 |---|---|---|
 | id | identifiant (UUID) | généré à la création |
-| patientId | référence à un patient | non nul |
+| patientRef | référence à un patient | non nul |
 | dateHeure | LocalDateTime | dans le futur |
 | statut | enum (`PLANIFIE`, `ANNULE`, `HONORE`) | `PLANIFIE` à la création |
 
@@ -20,11 +20,11 @@ levez une exception métier, mappez-la en 400 côté controller.
 **Endpoint**
 
 `POST /rdv` — rôle requis : `coordinateur`
-- Corps : `patientId`, `dateHeure`
+- Corps : `patientRef`, `dateHeure`
 - 201 avec le RDV créé si le patient existe et la date est valide
 - 400 si patient inconnu ou date passée
 
-`GET /rdv?patientId=...` — rôle requis : `soignant` ou `coordinateur`
+`GET /rdv?patientRef=...` — rôle requis : `soignant` ou `coordinateur`
 - 200, liste des RDV du patient
 
 **Frontend** (`frontend/src/app/rdv`)
