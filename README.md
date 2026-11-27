@@ -42,14 +42,14 @@ Schémas : [docs/rappels-hexagonal.md](docs/rappels-hexagonal.md).
 
 ## Où en est le projet
 
-| Palier | Contenu | État |
-|---|---|---|
-| 1 | Patient : création (US1), liste (US2) | Fait, testé (domaine, application, REST, JPA) |
-| 2 | Rendez-vous : planification (US3) | En cours : domaine et cas d'usage faits ; reste la persistance, l'API REST et la gestion d'erreurs |
-| 3 | Sécurité Keycloak : connexion OIDC, droits par rôle (US4 à US6) | À faire |
-| 4 | Kafka : événement « rdv planifié » et consommateur de notification (US7, US8) | À faire |
-| 5 | Matériel et fournisseurs (US9, US10, US13) | À faire |
-| 6 | Pipeline CI et tests d'architecture ArchUnit (US11, US12) | À faire |
+| Palier | Contenu | État                                                                                                      |
+|---|---|-----------------------------------------------------------------------------------------------------------|
+| 1 | Patient : création (US1), liste (US2) | Fait, testé (domaine, application, REST, JPA)                                                             |
+| 2 | Rendez-vous : planification (US3) | Fait, testé (domaine, application, JPA, REST avec gestion d'erreurs). Ajout test e2e création patient+rdv |
+| 3 | Sécurité Keycloak : connexion OIDC, droits par rôle (US4 à US6) | À faire                                                                                                   |
+| 4 | Kafka : événement « rdv planifié » et consommateur de notification (US7, US8) | À faire                                                                                                   |
+| 5 | Matériel et fournisseurs (US9, US10, US13) | À faire                                                                                                   |
+| 6 | Pipeline CI et tests d'architecture ArchUnit (US11, US12) | À faire                                                                                                   |
 
 Côté frontend : squelette Angular avec la liste et le détail des patients. Le reste suit les US Angular.
 
@@ -64,10 +64,13 @@ Prérequis : JDK 25, Maven, Node (version dans `frontend-angular/.nvmrc`).
 ```bash
 cd backend
 mvn spring-boot:run     # http://localhost:8080
-mvn test
+mvn verify
 ```
+`mvn verify` lance les tests d'intégration e2e. L'exécution est faite par failsafe (*IT.java).
 
-La base H2 est un fichier créé dans `backend/data/db/`. Sa console est disponible sur `/h2-console` quand l'application tourne.
+Pour les tests, une base H2 en mémoire est utilisée.
+
+La base H2 locale, en attendant postgresql, est un fichier créé dans `backend/data/db/`. Sa console est disponible sur `/h2-console` quand l'application tourne.
 
 ### Frontend
 
@@ -93,3 +96,4 @@ npm test                # tests unitaires (Vitest)
 
 - Commits au format [Conventional Commits](https://www.conventionalcommits.org/) : `type(scope): description`.
 - Un test par comportement, à chaque couche : domaine pur, service applicatif avec ports simulés, REST avec `@WebMvcTest`, adaptateur JPA.
+- Des tests d'intégration e2e pour vérifier l'enchaînement entre les différents domaines.
