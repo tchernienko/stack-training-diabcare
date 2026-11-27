@@ -2,7 +2,7 @@
 
 **Package** : `rdv/domain`, `rdv/application`, `rdv/infrastructure/primary`, `rdv/infrastructure/secondary`
 
-**Champs de l'agrégat `RendezVous`**
+**Champs de l'agrégat `rdv`**
 
 | Champ | Type | Règle de validation |
 |---|---|---|
@@ -19,15 +19,18 @@ levez une exception métier, mappez-la en 400 côté controller.
 
 **Endpoint**
 
+_Note_: la sécurité n'est pas encore en place à ce stade. Prévu au palier suivant.
+
 `POST /rdv` — rôle requis : `coordinateur`
 - Corps : `patientRef`, `dateHeure`
 - 201 avec le RDV créé si le patient existe et la date est valide
-- 400 si patient inconnu ou date passée
+- 400 si patient inconnu, date passée, body mal construit ou UUID patientRef invalide
 
 `GET /rdv?patientRef=...` — rôle requis : `soignant` ou `coordinateur`
-- 200, liste des RDV du patient
+- 200, liste des RDV du patient triée par ordre chronologique
+- 400 si patientRef manquant ou invalide  
 
-**Frontend** (`frontend/src/app/rdv`)
+**Frontend** (`frontend-angular/src/app/rdv`)
 - Formulaire de planification (sélection d'un patient existant + date/heure) en composant Angular,
   réservé coordinateur.
 
