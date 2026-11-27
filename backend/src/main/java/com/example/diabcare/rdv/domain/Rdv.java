@@ -42,4 +42,35 @@ public record Rdv(RdvId id, PatientRef patientRef, LocalDateTime dateHeure, RdvS
 
     }
 
+    public static class Builder {
+        private RdvId id;
+        private PatientRef patientRef;
+        private LocalDateTime dateHeure;
+        private RdvStatut statut;
+
+        public Rdv build() {
+            return new Rdv(this.id, this.patientRef, this.dateHeure, this.statut);
+        }
+
+        public Builder id(RdvId id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder patientRef(PatientRef patientRef) {
+            this.patientRef = patientRef;
+            return this;
+        }
+
+        public Builder dateHeure(LocalDateTime dateHeure) {
+            this.dateHeure = dateHeure;
+            return this;
+        }
+
+        public Builder statut(RdvStatut statut) {
+            this.statut = statut;
+            return this;
+        }
+    }
+
 }
