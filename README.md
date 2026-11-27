@@ -1,65 +1,99 @@
----
-title: diabcare training project
-published: false
-date: 2026-08-16
-tags:
-  - DDD
-  - hexagonal architecture (ports and adapters) with primary and secondary flavour
-  - maven
-  - springboot4
-  - java 25
-  - mysql
-  - kafka
-  - keycloak
-  - docker
-  - typescript
-  - angular
-  - angular material
----
-# Projet d'entrainement/apprentissage
+# Diabcare
 
-Monolithe modulaire (DDD / hexagonal, primary/secondary), Spring Boot 4 / Java 25,
-MySQL, Kafka, Keycloak (mono-realm), frontend Angular/TypeScript/Angular Material (PWA).
+Application de suivi de patients diabétiques de type 1 sous pompe : patients, rendez-vous, matériel, fournisseurs, notifications.
 
-Pour s'habituer à la stack.
+**C'est un projet d'apprentissage personnel, pas un produit.** Le métier est volontairement simple, pour pouvoir se concentrer sur la stack et l'architecture : Spring Boot, architecture hexagonale, DDD, sécurité Keycloak, Kafka, Angular.
 
-## Métier du projet
+Le projet est construit user story par user story, avec des tests à chaque couche et des commits conventionnels.
 
-Le metier de ce projet est:
+## Stack
 
-> prestataire dans le cadre du traitement du diabete de type 1 par pompe.
+| Couche | Choix |
+|---|---|
+| Backend | Java 25, Spring Boot 4.1, Maven (un seul module) |
+| Architecture | Monolithe modulaire, DDD, hexagonal (adaptateurs primary / secondary) |
+| Données | H2 en mode fichier pour l'instant ; PostgreSQL prévu |
+| Sécurité | Keycloak (realm unique, 4 rôles), OAuth2 resource server : prévu |
+| Messagerie | Kafka : prévu |
+| Frontend | Angular, TypeScript, Angular Material, zoneless, PWA, Vitest |
+| Tests backend | JUnit 5, AssertJ, Mockito, tests web et JPA |
 
-permet de gérer pas mal de choses.
+## Architecture
 
+Le backend est un monolithe modulaire. Chaque contexte métier (`patient`, `rdv`, puis `materiel`, `fournisseur`, `notification`) est un package découpé en quatre :
 
-## Ce qui est déjà en place (le socle)
+```
+<contexte>/
+├── domain/                      # agrégats, objets-valeurs, règles métier, exceptions du domaine
+├── application/                 # cas d'usage et ports (interfaces)
+└── infrastructure/
+    ├── primary/                 # ce qui appelle l'application : REST, DTO, gestion d'erreurs
+    └── secondary/               # ce que l'application appelle : base de données, autres contextes
+```
 
-- `backend/pom.xml` — dépendances Maven (Spring Boot 4.1, Kafka, OAuth2 resource server, ArchUnit)
-- `backend/src/main/java/.../DiabcareApplication.java` — point d'entrée Spring Boot
-- `backend/src/main/resources/application.yml` — config datasource / kafka / issuer Keycloak
-- `frontend-angular/` — squelette Angular + TypeScript + Angular Material + manifest PWA (aucune page métier).
-  `frontend-react/` est un premier essai React/Next.js, mis de côté pour l'instant (cf. `AGENTS.md`,
-  stack cible = Angular).
-- `docker-compose.yml`, `frontend-angular/Dockerfile`
-- `infra/keycloak/realm-export.json` — realm `diabcare`, 4 rôles, client `diabcare-frontend` (PKCE)
-- `.gitlab-ci.yml` — pipeline build (backend + frontend), stage test à compléter (US12)
+Règles suivies :
 
-## Ce qui reste à implémenter
+- Les dépendances pointent vers le domaine : le domaine ne connaît ni Spring, ni JPA, ni REST.
+- Un contexte ne dépend jamais du domaine ni de l'infrastructure d'un autre contexte. Quand `rdv` a besoin de savoir si un patient existe, il définit lui-même le port dont il a besoin (`CheckPatientExistencePort`). Un adaptateur secondaire l'implémente en appelant le service applicatif de `patient`.
+- Les agrégats se référencent entre eux par identité (`PatientRef` dans `Rdv`), jamais par objet.
+- Les frontières seront vérifiées automatiquement avec ArchUnit (US12).
 
-Tout le code métier : `patient/`, `rdv/`, `materiel/`, `fournisseur/`, `notification/`
-(domain / application / infrastructure/primary / infrastructure/secondary de chaque module),
-ainsi que `shared/` (les types partagés que vous jugerez nécessaires au fil de l'eau),
-la sécurité Spring (`bootstrap/security/`), et les pages front correspondantes.
+Schémas : [docs/rappels-hexagonal.md](docs/rappels-hexagonal.md).
 
-Voir [ici](../docs/user-stories/) pour le détail des US (champs, endpoints, règles) — un répertoire
-par palier, un fichier par US.
+## Où en est le projet
+
+| Palier | Contenu | État                                                                                                      |
+|---|---|-----------------------------------------------------------------------------------------------------------|
+| 1 | Patient : création (US1), liste (US2) | Fait, testé (domaine, application, REST, JPA)                                                             |
+| 2 | Rendez-vous : planification (US3) | Fait, testé (domaine, application, JPA, REST avec gestion d'erreurs). Ajout test e2e création patient+rdv |
+| 3 | Sécurité Keycloak : connexion OIDC, droits par rôle (US4 à US6) | À faire                                                                                                   |
+| 4 | Kafka : événement « rdv planifié » et consommateur de notification (US7, US8) | À faire                                                                                                   |
+| 5 | Matériel et fournisseurs (US9, US10, US13) | À faire                                                                                                   |
+| 6 | Pipeline CI et tests d'architecture ArchUnit (US11, US12) | À faire                                                                                                   |
+
+Côté frontend : squelette Angular avec la liste et le détail des patients. Le reste suit les US Angular.
+
+Le détail des US (champs, endpoints, règles, critères d'acceptation) est dans [docs/user-stories](docs/user-stories/).
 
 ## Démarrer
 
+Prérequis : JDK 25, Maven, Node (version dans `frontend-angular/.nvmrc`).
+
+### Backend
+
 ```bash
-docker compose up -d mysql kafka keycloak   # infra seule, pour développer le backend en local
-cd backend && mvn spring-boot:run
-cd frontend-angular && npm start             # ng serve, http://localhost:4200
+cd backend
+mvn spring-boot:run     # http://localhost:8080
+mvn verify
+```
+`mvn verify` lance les tests d'intégration e2e. L'exécution est faite par failsafe (*IT.java).
+
+Pour les tests, une base H2 en mémoire est utilisée.
+
+La base H2 locale, en attendant postgresql, est un fichier créé dans `backend/data/db/`. Sa console est disponible sur `/h2-console` quand l'application tourne.
+
+### Frontend
+
+```bash
+cd frontend-angular
+npm install
+npm start               # http://localhost:4200, les appels /api sont redirigés vers :8080
+npm test                # tests unitaires (Vitest)
 ```
 
+### Docker
 
+`docker-compose.yml` prépare l'infrastructure des paliers suivants (PostgreSQL, Kafka, Keycloak, avec le realm importé depuis `infra/keycloak/realm-export.json`). Le backend ne s'en sert pas encore : seul `docker compose up -d postgres kafka keycloak` a un sens, et uniquement quand les paliers 3 et 4 seront démarrés.
+
+## Documentation du projet
+
+- [docs/user-stories](docs/user-stories/) : les user stories, palier par palier.
+- [docs/roadbook](docs/roadbook/) : notes de décision et pièges rencontrés, au format contexte / décision / pourquoi / conséquences.
+- [docs/dette-technique](docs/dette-technique/README.md) : points connus à reprendre.
+- [docs/rappels-hexagonal.md](docs/rappels-hexagonal.md) : schémas de l'architecture.
+
+## Conventions
+
+- Commits au format [Conventional Commits](https://www.conventionalcommits.org/) : `type(scope): description`.
+- Un test par comportement, à chaque couche : domaine pur, service applicatif avec ports simulés, REST avec `@WebMvcTest`, adaptateur JPA.
+- Des tests d'intégration e2e pour vérifier l'enchaînement entre les différents domaines.

@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -27,8 +28,11 @@ public class PatientApplicationService {
     public Patient findById(PatientId id) throws PatientNotFoundException {
         Optional<Patient> result = repositoryPort.findById(id);
         return result.orElseThrow(
-            () -> new PatientNotFoundException(id.getValue(), "Pas de avec cet id %s".formatted(id))
+            () -> new PatientNotFoundException(id.getValue(), "Pas de patient avec cet id %s".formatted(id))
         );
     }
 
+    public boolean patientExiste(UUID value) {
+        return repositoryPort.findById(PatientId.of(value)).isPresent();
+    }
 }

@@ -1,13 +1,13 @@
 spring:
 
   datasource:
-    url: jdbc:h2:file:./data/db/diabcare
+    url: jdbc:h2:mem:diabcare-test
     username: ${DB_USER:SA}
     password: ${DB_PASSWORD:}
 
   jpa:
     hibernate:
-      ddl-auto: create # OK pour un projet d'apprentissage solo ; à remplacer par Flyway/Liquibase pour les migrations versionnées
+      ddl-auto: create-drop # OK pour un projet d'apprentissage solo ; à remplacer par Flyway/Liquibase pour les migrations versionnées
     properties:
       hibernate:
         format_sql: true
